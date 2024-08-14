@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'Setting.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Analysis extends StatefulWidget {
   const Analysis({super.key});
@@ -10,12 +12,25 @@ class Analysis extends StatefulWidget {
 
 class _AnalysisState extends State<Analysis> {
   int _counter = 0;
-
+  
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
   }
+//////
+
+ XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
+///////
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +66,7 @@ class _AnalysisState extends State<Analysis> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Communication', style: TextStyle(fontSize: 18)),
+                      Text('Communication', style: TextStyle(fontSize: 20)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -66,14 +81,14 @@ class _AnalysisState extends State<Analysis> {
                           ),
                         ],
                       ),
-                      Text('Risk : ', style: TextStyle(fontSize: 18))
+                      Text('Risk : ', style: TextStyle(fontSize: 20))
                     ],
                   ),
                 )),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 15),
+              padding: const EdgeInsets.only(top: 25,bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -81,8 +96,8 @@ class _AnalysisState extends State<Analysis> {
                     children: [
                       Text('D1'),
                       Container(
-                        height: 70,
-                        width: 70,
+                        height: 80,
+                        width: 80,
                         decoration: BoxDecoration(
                             color: Color.fromARGB(255, 231, 231, 231),
                             border: Border.all(
@@ -94,13 +109,13 @@ class _AnalysisState extends State<Analysis> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(left: 30,right: 30),
                     child: Column(
                       children: [
                         Text('D2'),
                         Container(
-                          height: 70,
-                          width: 70,
+                          height: 80,
+                        width: 80,
                           decoration: BoxDecoration(
                               color: Color.fromARGB(255, 231, 231, 231),
                               border: Border.all(
@@ -116,8 +131,8 @@ class _AnalysisState extends State<Analysis> {
                     children: [
                       Text('D3'),
                       Container(
-                        height: 70,
-                        width: 70,
+                        height: 80,
+                        width: 80,
                         decoration: BoxDecoration(
                             color: Color.fromARGB(255, 231, 231, 231),
                             border: Border.all(
@@ -133,21 +148,34 @@ class _AnalysisState extends State<Analysis> {
             ),
             Text('Control'),
             Container(
-              height: 70,
-              width: 70,
+             height: 80,
+                        width: 80,
               decoration: BoxDecoration(
                   color: Color.fromARGB(255, 231, 231, 231),
                   border: Border.all(
                       width: 5, color: Color.fromARGB(255, 87, 87, 87)),
                   borderRadius: BorderRadius.all(Radius.circular(100))),
             ),
+            Center(
+              child: _imageFile == null
+            ? Text('No image selected.')
+            : Image.file(File(_imageFile!.path)),
+            ),
+            
+            
+
+            
+           
+
+
+            
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -191,7 +219,7 @@ class _AnalysisState extends State<Analysis> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -220,5 +248,9 @@ class _AnalysisState extends State<Analysis> {
         ),
       ),
     );
+    floatingActionButton: FloatingActionButton(
+              onPressed: _pickImage,
+              child: Icon(Icons.camera_alt),
+            );
   }
 }
