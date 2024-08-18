@@ -13,8 +13,8 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   var m = TextEditingController();
   var C = TextEditingController();
-  int mm = 0;
-  int CC = 0;
+  double mm = 0;
+  double CC = 0;
   @override
   void initState() {
     super.initState();
@@ -24,8 +24,8 @@ class _SettingPageState extends State<SettingPage> {
   void getdata() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      mm = prefs.getInt("mm") ?? 0;
-      CC = prefs.getInt("CC") ?? 0;
+      mm = prefs.getDouble("mm") ?? 0;
+      CC = prefs.getDouble("CC") ?? 0;
     });
   }
 
@@ -162,17 +162,17 @@ class _SettingPageState extends State<SettingPage> {
                   final SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   if (m.text.isNotEmpty) {
-                    await prefs.setInt(
-                        'mm', (m.text.isEmpty) ? 0 : int.parse(m.text));
+                    await prefs.setDouble(
+                        'mm', (m.text.isEmpty) ? 0 : double.parse(m.text));
                     setState(() {
-                      mm = (m.text.isEmpty) ? 0 : int.parse(m.text);
+                      mm = (m.text.isEmpty) ? 0 : double.parse(m.text);
                     });
                   }
                   if (C.text.isNotEmpty) {
-                    await prefs.setInt(
-                        'CC', (C.text.isEmpty) ? 0 : int.parse(C.text));
+                    await prefs.setDouble(
+                        'CC', (C.text.isEmpty) ? 0 : double.parse(C.text));
                     setState(() {
-                      CC = (C.text.isEmpty) ? 0 : int.parse(C.text);
+                      CC = (C.text.isEmpty) ? 0 : double.parse(C.text);
                     });
                   }
                 },

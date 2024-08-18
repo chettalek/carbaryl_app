@@ -1,4 +1,7 @@
 import 'dart:io';
+
+import 'package:carbaryl_app/get.dart';
+import 'package:carbaryl_app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Setting.dart';
@@ -12,9 +15,13 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
-  int mm = 0;
-  int CC = 0;
-  int xx = 0;
+  double mm = 0;
+  double CC = 0;
+  double xx = 0;
+  Color D1 = Colors.white;
+  Color D2 = Colors.white;
+  Color D3 = Colors.white;
+  Color Control = Colors.white;
   @override
   void initState() {
     super.initState();
@@ -24,9 +31,9 @@ class _AnalysisState extends State<Analysis> {
   void getdata() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      mm = prefs.getInt("mm") ?? 0;
-      CC = prefs.getInt("CC") ?? 0;
-      xx = prefs.getInt("xx") ?? 0;
+      mm = prefs.getDouble("mm") ?? 0;
+      CC = prefs.getDouble("CC") ?? 0;
+      xx = prefs.getDouble("xx") ?? 0;
     });
   }
 
@@ -36,10 +43,30 @@ class _AnalysisState extends State<Analysis> {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await _picker.pickImage(
+        source: ImageSource.camera, maxHeight: 600, maxWidth: 400);
     setState(() {
       _imageFile = pickedFile;
     });
+    if (_imageFile != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ColorPickerPage(
+                    pic: _imageFile,
+                  ))).then((val) {
+        print(val);
+        if (val != null) {
+          setState(() {
+            D1 = val["D1"];
+            D2 = val["D2"];
+            D3 = val["D3"];
+            Control = val["Control"];
+          });
+          print("rgbbbb = ${D1.red}");
+        }
+      });
+    }
   }
 
 ///////
@@ -84,7 +111,9 @@ class _AnalysisState extends State<Analysis> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            '${(mm * xx) + CC}',
+                            (D2 == Colors.white)
+                                ? "0"
+                                : '${((mm * D2.red) + CC).toStringAsFixed(2)}',
                             style: TextStyle(fontSize: 72),
                           ),
                           Padding(
@@ -102,77 +131,15 @@ class _AnalysisState extends State<Analysis> {
             Padding(
               padding: const EdgeInsets.only(top: 25, bottom: 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Column(
-                    children: [
-                      Text('D1'),
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 231, 231, 231),
-                            border: Border.all(
-                                width: 5,
-                                color: Color.fromARGB(255, 87, 87, 87)),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(100))),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
-                    child: Column(
-                      children: [
-                        Text('D2'),
-                        Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 231, 231, 231),
-                              border: Border.all(
-                                  width: 5,
-                                  color: Color.fromARGB(255, 87, 87, 87)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(100))),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Text('D3'),
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 231, 231, 231),
-                            border: Border.all(
-                                width: 5,
-                                color: Color.fromARGB(255, 87, 87, 87)),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(100))),
-                      ),
-                    ],
-                  ),
+                  itemcircle("D1", D1),
+                  itemcircle("D2", D2),
+                  itemcircle("D3", D3)
                 ],
               ),
             ),
-            Text('Control'),
-            Container(
-              height: 80,
-              width: 80,
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 231, 231, 231),
-                  border: Border.all(
-                      width: 5, color: Color.fromARGB(255, 87, 87, 87)),
-                  borderRadius: BorderRadius.all(Radius.circular(100))),
-            ),
-            Center(
-              child: _imageFile == null
-                  ? Text('No image selected.')
-                  : Image.file(File(_imageFile!.path)),
-            ),
+            itemcircle("Control", Control),
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -199,7 +166,9 @@ class _AnalysisState extends State<Analysis> {
                 Expanded(
                   child: IconButton(
                     iconSize: 50,
-                    onPressed: () {},
+                    onPressed: () {
+                      _pickImage();
+                    },
                     icon: Icon(
                       Icons.camera_alt_outlined,
                       size: 60,
@@ -244,6 +213,24 @@ class _AnalysisState extends State<Analysis> {
     FloatingActionButton(
       onPressed: _pickImage,
       child: Icon(Icons.camera_alt),
+    );
+  }
+
+  Widget itemcircle(title, touchcolor) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(title),
+        Container(
+          height: 80,
+          width: 80,
+          decoration: BoxDecoration(
+              color: touchcolor,
+              border:
+                  Border.all(width: 5, color: Color.fromARGB(255, 87, 87, 87)),
+              borderRadius: BorderRadius.all(Radius.circular(100))),
+        ),
+      ],
     );
   }
 }
