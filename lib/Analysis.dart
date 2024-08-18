@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Setting.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,16 +12,27 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
-  int _counter = 0;
-  
-  void _incrementCounter() {
+  int mm = 0;
+  int CC = 0;
+  int xx = 0;
+  @override
+  void initState() {
+    super.initState();
+    getdata();
+  }
+
+  void getdata() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _counter++;
+      mm = prefs.getInt("mm") ?? 0;
+      CC = prefs.getInt("CC") ?? 0;
+      xx = prefs.getInt("xx") ?? 0;
     });
   }
+
 //////
 
- XFile? _imageFile;
+  XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
@@ -72,7 +84,7 @@ class _AnalysisState extends State<Analysis> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            '0.00',
+                            '${(mm * xx) + CC}',
                             style: TextStyle(fontSize: 72),
                           ),
                           Padding(
@@ -88,7 +100,7 @@ class _AnalysisState extends State<Analysis> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 25,bottom: 20),
+              padding: const EdgeInsets.only(top: 25, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -109,13 +121,13 @@ class _AnalysisState extends State<Analysis> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30,right: 30),
+                    padding: const EdgeInsets.only(left: 30, right: 30),
                     child: Column(
                       children: [
                         Text('D2'),
                         Container(
                           height: 80,
-                        width: 80,
+                          width: 80,
                           decoration: BoxDecoration(
                               color: Color.fromARGB(255, 231, 231, 231),
                               border: Border.all(
@@ -148,8 +160,8 @@ class _AnalysisState extends State<Analysis> {
             ),
             Text('Control'),
             Container(
-             height: 80,
-                        width: 80,
+              height: 80,
+              width: 80,
               decoration: BoxDecoration(
                   color: Color.fromARGB(255, 231, 231, 231),
                   border: Border.all(
@@ -158,17 +170,9 @@ class _AnalysisState extends State<Analysis> {
             ),
             Center(
               child: _imageFile == null
-            ? Text('No image selected.')
-            : Image.file(File(_imageFile!.path)),
+                  ? Text('No image selected.')
+                  : Image.file(File(_imageFile!.path)),
             ),
-            
-            
-
-            
-           
-
-
-            
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -181,14 +185,7 @@ class _AnalysisState extends State<Analysis> {
                       children: [
                         IconButton(
                           iconSize: 50,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SettingPage(
-                                          title: 'Setting',
-                                        )));
-                          },
+                          onPressed: () {},
                           icon: Icon(
                             Icons.auto_graph,
                             size: 55,
@@ -202,14 +199,7 @@ class _AnalysisState extends State<Analysis> {
                 Expanded(
                   child: IconButton(
                     iconSize: 50,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SettingPage(
-                                    title: 'Setting',
-                                  )));
-                    },
+                    onPressed: () {},
                     icon: Icon(
                       Icons.camera_alt_outlined,
                       size: 60,
@@ -231,7 +221,9 @@ class _AnalysisState extends State<Analysis> {
                                 MaterialPageRoute(
                                     builder: (context) => SettingPage(
                                           title: 'Setting',
-                                        )));
+                                        ))).then((val) {
+                              getdata();
+                            });
                           },
                           icon: Icon(
                             Icons.settings,
@@ -248,9 +240,10 @@ class _AnalysisState extends State<Analysis> {
         ),
       ),
     );
-    floatingActionButton: FloatingActionButton(
-              onPressed: _pickImage,
-              child: Icon(Icons.camera_alt),
-            );
+    floatingActionButton:
+    FloatingActionButton(
+      onPressed: _pickImage,
+      child: Icon(Icons.camera_alt),
+    );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -10,6 +11,24 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  var m = TextEditingController();
+  var C = TextEditingController();
+  int mm = 0;
+  int CC = 0;
+  @override
+  void initState() {
+    super.initState();
+    getdata();
+  }
+
+  void getdata() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      mm = prefs.getInt("mm") ?? 0;
+      CC = prefs.getInt("CC") ?? 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,28 +62,60 @@ class _SettingPageState extends State<SettingPage> {
                         children: [
                           Text('y = ', style: TextStyle(fontSize: 18)),
                           Container(
-                            height: 25,
-                            width: 70,
+                            height: 40,
+                            width: 80,
                             decoration: BoxDecoration(
                               color: Color.fromARGB(255, 255, 251, 251),
                               border: Border.all(
                                   width: 1,
                                   color: Color.fromARGB(255, 87, 87, 87)),
                             ),
-                            child: TextField(),
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: TextField(
+                                controller: m,
+                                decoration:
+                                    InputDecoration(border: InputBorder.none),
+                                keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true,
+                                  signed: false,
+                                ),
+                                inputFormatters: <TextInputFormatter>[
+                                  //FilteringTextInputFormatter.digitsOnly
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r"[0-9.]")),
+                                ],
+                              ),
+                            ),
                           ),
                           Text(' x', style: TextStyle(fontSize: 18)),
                           Text('  +  ', style: TextStyle(fontSize: 18)),
                           Container(
-                            height: 25,
-                            width: 70,
+                            height: 40,
+                            width: 80,
                             decoration: BoxDecoration(
                               color: Color.fromARGB(255, 255, 251, 251),
                               border: Border.all(
                                   width: 1,
                                   color: Color.fromARGB(255, 87, 87, 87)),
                             ),
-                            child: TextField(),
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: TextField(
+                                controller: C,
+                                decoration:
+                                    InputDecoration(border: InputBorder.none),
+                                keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true,
+                                  signed: false,
+                                ),
+                                inputFormatters: <TextInputFormatter>[
+                                  //FilteringTextInputFormatter.digitsOnly
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r"[0-9.]")),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -92,11 +143,10 @@ class _SettingPageState extends State<SettingPage> {
                       Row(
                         children: [
                           Text('y = ', style: TextStyle(fontSize: 18)),
-                          Text('6.356', style: TextStyle(fontSize: 18)),
+                          Text('$mm', style: TextStyle(fontSize: 18)),
                           Text('x', style: TextStyle(fontSize: 18)),
                           Text('  +  ', style: TextStyle(fontSize: 18)),
-                          Text('6.4671', style: TextStyle(fontSize: 18)),
-                         
+                          Text('$CC', style: TextStyle(fontSize: 18)),
                         ],
                       ),
                     ],
@@ -107,25 +157,46 @@ class _SettingPageState extends State<SettingPage> {
             Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 25),
-              child: Container(
-                height: 60,
-                 width: 280,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 78, 255, 170),
-                  borderRadius: BorderRadius.all(Radius.circular(30))
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Save',style: TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold)),
-                      
-                    ],
+              child: GestureDetector(
+                onTap: () async {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  if (m.text.isNotEmpty) {
+                    await prefs.setInt(
+                        'mm', (m.text.isEmpty) ? 0 : int.parse(m.text));
+                    setState(() {
+                      mm = (m.text.isEmpty) ? 0 : int.parse(m.text);
+                    });
+                  }
+                  if (C.text.isNotEmpty) {
+                    await prefs.setInt(
+                        'CC', (C.text.isEmpty) ? 0 : int.parse(C.text));
+                    setState(() {
+                      CC = (C.text.isEmpty) ? 0 : int.parse(C.text);
+                    });
+                  }
+                },
+                child: Container(
+                  height: 60,
+                  width: 280,
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 78, 255, 170),
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Save',
+                            style: TextStyle(
+                                fontSize: 30,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
                   ),
                 ),
               ),
             )
-           
           ],
         ),
       ),
