@@ -89,8 +89,9 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                     {"D1": D1, "D2": D2, "D3": D3, "Control": Control});
               },
               child: Icon(
-                Icons.check,
-                size: 30,
+                Icons.check_circle,
+                color: Colors.green,
+                size: 35,
               ),
             ),
           )
@@ -123,11 +124,6 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                             color: Colors.red),
                         width: 30,
                         height: 30,
-                        // Image.asset(
-                        //   '/assets/icons/scope.png', // รูปภาพที่คุณต้องการใช้เป็นไอคอน
-                        //   width: 40,
-                        //   height: 40,
-                        // ),
                         //Icon(Icons.dangerous, color: Colors.blue, size: 40),
                       ),
                   ],

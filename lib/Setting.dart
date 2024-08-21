@@ -71,7 +71,7 @@ class _SettingPageState extends State<SettingPage> {
                                   color: Color.fromARGB(255, 87, 87, 87)),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.only(bottom: 4),
                               child: TextField(
                                 controller: m,
                                 decoration:
@@ -100,7 +100,7 @@ class _SettingPageState extends State<SettingPage> {
                                   color: Color.fromARGB(255, 87, 87, 87)),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.only(bottom: 4),
                               child: TextField(
                                 controller: C,
                                 decoration:

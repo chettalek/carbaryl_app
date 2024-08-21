@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:carbaryl_app/getcolor.dart';
+// import 'package:carbaryl_app/getcolor.dart';
 import 'package:carbaryl_app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,8 +37,6 @@ class _AnalysisState extends State<Analysis> {
     });
   }
 
-//////
-
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
@@ -68,8 +66,6 @@ class _AnalysisState extends State<Analysis> {
       });
     }
   }
-
-///////
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +110,7 @@ class _AnalysisState extends State<Analysis> {
                             (D2 == Colors.white)
                                 ? "0"
                                 : '${NumberFormat("#,###.##").format(((mm * D2.red) + CC))}',
-                            style: TextStyle(fontSize: 64),
+                            style: TextStyle(fontSize: 45),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 22),
