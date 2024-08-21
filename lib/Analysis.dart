@@ -1,6 +1,6 @@
 import 'dart:io';
-
-import 'package:carbaryl_app/get.dart';
+import 'package:intl/intl.dart';
+import 'package:carbaryl_app/getcolor.dart';
 import 'package:carbaryl_app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,7 +75,7 @@ class _AnalysisState extends State<Analysis> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 145, 145, 145),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text('Analysis'),
         centerTitle: true,
         actions: [
@@ -96,7 +96,7 @@ class _AnalysisState extends State<Analysis> {
                 height: 300,
                 width: 500,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 201, 201, 201),
+                    color: Color.fromARGB(255, 218, 218, 218),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Center(
                     child: Padding(
@@ -113,8 +113,8 @@ class _AnalysisState extends State<Analysis> {
                           Text(
                             (D2 == Colors.white)
                                 ? "0"
-                                : '${((mm * D2.red) + CC).toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 72),
+                                : '${NumberFormat("#,###.##").format(((mm * D2.red) + CC))}',
+                            style: TextStyle(fontSize: 64),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 22),
@@ -141,69 +141,74 @@ class _AnalysisState extends State<Analysis> {
             ),
             itemcircle("Control", Control),
             Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          iconSize: 50,
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.auto_graph,
-                            size: 55,
-                            color: Color.fromARGB(255, 59, 194, 149),
+            Padding(
+              padding: (Platform.isAndroid)
+                  ? EdgeInsets.all(0)
+                  : EdgeInsets.only(bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            iconSize: 50,
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.auto_graph,
+                              size: 55,
+                              color: Color.fromARGB(255, 59, 194, 149),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: IconButton(
-                    iconSize: 50,
-                    onPressed: () {
-                      _pickImage();
-                    },
-                    icon: Icon(
-                      Icons.camera_alt_outlined,
-                      size: 60,
-                      color: Color.fromARGB(255, 59, 194, 149),
+                  Expanded(
+                    child: IconButton(
+                      iconSize: 50,
+                      onPressed: () {
+                        _pickImage();
+                      },
+                      icon: Icon(
+                        Icons.camera_alt_outlined,
+                        size: 60,
+                        color: Color.fromARGB(255, 59, 194, 149),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          iconSize: 50,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SettingPage(
-                                          title: 'Setting',
-                                        ))).then((val) {
-                              getdata();
-                            });
-                          },
-                          icon: Icon(
-                            Icons.settings,
-                            size: 55,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            iconSize: 50,
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SettingPage(
+                                            title: 'Setting',
+                                          ))).then((val) {
+                                getdata();
+                              });
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 55,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

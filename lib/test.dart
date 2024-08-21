@@ -13,6 +13,11 @@ class ColorPickerPage extends StatefulWidget {
 }
 
 class _ColorPickerPageState extends State<ColorPickerPage> {
+  bool _isTapped = false;
+  Offset? _tapPosition;
+  // ตำแหน่งที่คลิก
+  Offset? _iconPosition; // ตำแหน่งของไอคอนเมื่อมีการลาก
+
   List<Color> colors = [];
   String onselect = "D1";
   Color D1 = Colors.white;
@@ -22,30 +27,30 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
   @override
   void initState() {
     super.initState();
-    //_loadImageAndExtractColors(Offset(5.1, 5.2));
+  }
+
+  void _handlePanUpdate(DragUpdateDetails details) {
+    setState(() {
+      _tapPosition = details.localPosition; // เก็บตำแหน่งที่คลิก
+    });
+    _loadImageAndExtractColors(details.localPosition, onselect);
+  }
+
+  void _handleTapDown(TapDownDetails details) {
+    setState(() {
+      _tapPosition = details.localPosition; // เก็บตำแหน่งที่คลิก
+    });
+    // แสดงพิกัดการแตะ
+    print('Offset: ${details.localPosition}');
+    // โหลดรูปและดึงสี
+    _loadImageAndExtractColors(details.localPosition, onselect);
   }
 
   Future<void> _loadImageAndExtractColors(Offset off, pick) async {
-    // Load image from assets
-    //final ByteData data = await widget.pic.readAsBytes();
     final Uint8List bytes = await widget.pic!.readAsBytes();
 
-    // Decode image
     final img.Image image = img.decodeImage(Uint8List.fromList(bytes))!;
-    // img.Image image = img.copyResize(pickimage, width: 392, height: 694);
-    //final img.Image image = img.encodeJpg(resized);
 
-    // Define positions you want to sample colors from
-    // final positions = [
-    //   //Offset(5.1, 5.2), // Example positions
-    //   // Offset(216.7, 254.3),
-    //   // Offset(370.5, 384.5),
-    // ];
-    // positions.add(off);
-    // List<Color> extractedColors = [];
-
-    //for (final pos in positions) {
-    // Ensure positions are within bounds
     if (off.dx >= 0 &&
         off.dx < image.width &&
         off.dy >= 0 &&
@@ -69,9 +74,6 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
         }
       });
     }
-    //     extractedColors.add(color);
-    //   }
-    // }
   }
 
   @override
@@ -101,19 +103,36 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
           child: Column(
             children: [
               GestureDetector(
-                  onTapDown: (details) {
-                    // This gives you the offset of the touch event
-                    print('Offset: ${details.localPosition}');
-                    _loadImageAndExtractColors(details.localPosition, onselect);
-                  },
-                  child: Image.file(
-                    File(widget.pic!.path),
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
-                      return const Center(
-                          child: Text('This image type is not supported'));
-                    },
-                  )),
+                onTapDown: _handleTapDown,
+                onPanUpdate: _handlePanUpdate,
+                child: Stack(
+                  children: [
+                    Image.file(
+                      File(widget.pic!.path),
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        return const Center(
+                            child: Text('This image type is not supported'));
+                      },
+                    ),
+                    if (_tapPosition != null) // ตรวจสอบว่ามีการคลิกหรือไม่
+                      Positioned(
+                        left: _tapPosition!.dx - 20, // ปรับตำแหน่งของไอคอน
+                        top: _tapPosition!.dy - 20,
+                        child: Image.asset('assets/images/scope3.png',
+                            color: Colors.red),
+                        width: 30,
+                        height: 30,
+                        // Image.asset(
+                        //   '/assets/icons/scope.png', // รูปภาพที่คุณต้องการใช้เป็นไอคอน
+                        //   width: 40,
+                        //   height: 40,
+                        // ),
+                        //Icon(Icons.dangerous, color: Colors.blue, size: 40),
+                      ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -126,17 +145,6 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                   ],
                 ),
               )
-              // Wrap(
-              //   spacing: 8.0,
-              //   runSpacing: 8.0,
-              //   children: colors
-              //       .map((color) => Container(
-              //             width: 100,
-              //             height: 100,
-              //             color: color,
-              //           ))
-              //       .toList(),
-              // ),
             ],
           ),
         ),

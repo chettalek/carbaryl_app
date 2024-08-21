@@ -35,7 +35,7 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         title: Text('Setting'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 145, 145, 145),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
       ),
       body: Center(
         child: Column(
@@ -47,7 +47,7 @@ class _SettingPageState extends State<SettingPage> {
                 height: 130,
                 width: 500,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 201, 201, 201),
+                    color: Color.fromARGB(255, 218, 218, 218),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Center(
                     child: Padding(
@@ -62,7 +62,7 @@ class _SettingPageState extends State<SettingPage> {
                         children: [
                           Text('y = ', style: TextStyle(fontSize: 18)),
                           Container(
-                            height: 40,
+                            height: 35,
                             width: 80,
                             decoration: BoxDecoration(
                               color: Color.fromARGB(255, 255, 251, 251),
@@ -71,7 +71,7 @@ class _SettingPageState extends State<SettingPage> {
                                   color: Color.fromARGB(255, 87, 87, 87)),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
+                              padding: const EdgeInsets.only(bottom: 10),
                               child: TextField(
                                 controller: m,
                                 decoration:
@@ -91,7 +91,7 @@ class _SettingPageState extends State<SettingPage> {
                           Text(' x', style: TextStyle(fontSize: 18)),
                           Text('  +  ', style: TextStyle(fontSize: 18)),
                           Container(
-                            height: 40,
+                            height: 35,
                             width: 80,
                             decoration: BoxDecoration(
                               color: Color.fromARGB(255, 255, 251, 251),
@@ -100,7 +100,7 @@ class _SettingPageState extends State<SettingPage> {
                                   color: Color.fromARGB(255, 87, 87, 87)),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
+                              padding: const EdgeInsets.only(bottom: 10),
                               child: TextField(
                                 controller: C,
                                 decoration:
@@ -130,7 +130,7 @@ class _SettingPageState extends State<SettingPage> {
                 height: 130,
                 width: 500,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 201, 201, 201),
+                    color: Color.fromARGB(255, 218, 218, 218),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Center(
                     child: Padding(
@@ -180,7 +180,7 @@ class _SettingPageState extends State<SettingPage> {
                   height: 60,
                   width: 280,
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 78, 255, 170),
+                      color: Color.fromARGB(255, 83, 213, 150),
                       borderRadius: BorderRadius.all(Radius.circular(30))),
                   child: Center(
                     child: Column(
