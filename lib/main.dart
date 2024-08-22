@@ -1,4 +1,5 @@
 import 'package:carbaryl_app/Analysis.dart';
+import 'package:carbaryl_app/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,14 +16,14 @@ class MyApp extends StatelessWidget {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
       child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Color.fromARGB(253, 121, 121, 121)),
-          useMaterial3: true,
-        ),
-        home: const Analysis(),
-      ),
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: Color.fromARGB(253, 121, 121, 121)),
+            useMaterial3: true,
+          ),
+          home: const homepage() //Analysis(),
+          ),
     );
   }
 }

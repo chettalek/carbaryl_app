@@ -152,7 +152,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(getR),
+        Text((getR == "255") ? "" : getR),
+        //Text(getR),
         GestureDetector(
           onTap: () {
             setState(() {

@@ -150,6 +150,13 @@ class _AnalysisState extends State<Analysis> {
               ),
             ),
             itemcircle("Control", Control),
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Text(
+                "R avg = ${NumberFormat("#,###.##").format(Ravg)}",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
             Spacer(),
             Padding(
               padding: (Platform.isAndroid)
