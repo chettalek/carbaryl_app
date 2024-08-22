@@ -22,6 +22,7 @@ class _AnalysisState extends State<Analysis> {
   Color D2 = Colors.white;
   Color D3 = Colors.white;
   Color Control = Colors.white;
+  double Ravg = 0;
   @override
   void initState() {
     super.initState();
@@ -60,8 +61,21 @@ class _AnalysisState extends State<Analysis> {
             D2 = val["D2"];
             D3 = val["D3"];
             Control = val["Control"];
+            Ravg = (D1.red + D2.red + D3.red) / 3;
           });
-          print("rgbbbb = ${D1.red}");
+          print("-----------------------------------------------------");
+          print("----------------------------------------------------");
+          print("RD1 = ${D1.red}");
+          print("RD2 = ${D2.red}");
+          print("RD3 = ${D3.red}");
+          print("RControl = ${Control.red}");
+          print("Rtotal = RD1+RD2+RD3 = ${D1.red + D2.red + D3.red}");
+          print("Ravg = Rtotal / 3 = ${Ravg}");
+          print("y = Ravg - RControl = ${Ravg - Control.red}");
+          print(
+              "Display x = (y - c) / m = ${((Ravg - Control.red) - CC) / mm}");
+          print("----------------------------------------------------");
+          print("-----------------------------------------------------");
         }
       });
     }
@@ -109,8 +123,8 @@ class _AnalysisState extends State<Analysis> {
                           Text(
                             (D2 == Colors.white)
                                 ? "0"
-                                : '${NumberFormat("#,###.##").format(((mm * D2.red) + CC))}',
-                            style: TextStyle(fontSize: 45),
+                                : '${NumberFormat("#,###.##").format(((Ravg - Control.red) - CC) / mm)}',
+                            style: TextStyle(fontSize: 62),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 22),
@@ -118,7 +132,7 @@ class _AnalysisState extends State<Analysis> {
                           ),
                         ],
                       ),
-                      Text('Risk : ', style: TextStyle(fontSize: 20))
+                      Text('Risk : ', style: TextStyle(fontSize: 20)),
                     ],
                   ),
                 )),
@@ -150,6 +164,11 @@ class _AnalysisState extends State<Analysis> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          // Icon(
+                          //   Icons.auto_graph,
+                          //   size: 55,
+                          //   color: Color.fromARGB(255, 59, 194, 149),
+                          // ),
                           IconButton(
                             iconSize: 50,
                             onPressed: () {},

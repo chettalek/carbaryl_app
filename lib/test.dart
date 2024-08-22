@@ -118,8 +118,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                     ),
                     if (_tapPosition != null) // ตรวจสอบว่ามีการคลิกหรือไม่
                       Positioned(
-                        left: _tapPosition!.dx - 20, // ปรับตำแหน่งของไอคอน
-                        top: _tapPosition!.dy - 20,
+                        left: _tapPosition!.dx - 19, // ปรับตำแหน่งของไอคอน
+                        top: _tapPosition!.dy - 19,
                         child: Image.asset('assets/images/scope3.png',
                             color: Colors.red),
                         width: 30,
@@ -134,10 +134,10 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    itemcircle("D1", D1),
-                    itemcircle("D2", D2),
-                    itemcircle("D3", D3),
-                    itemcircle("Control", Control)
+                    itemcircle("D1", D1, "${D1.red}"),
+                    itemcircle("D2", D2, "${D2.red}"),
+                    itemcircle("D3", D3, "${D3.red}"),
+                    itemcircle("Control", Control, "${Control.red}")
                   ],
                 ),
               )
@@ -148,11 +148,11 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
     );
   }
 
-  Widget itemcircle(title, touchcolor) {
+  Widget itemcircle(title, touchcolor, getR) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(title),
+        Text(getR),
         GestureDetector(
           onTap: () {
             setState(() {
@@ -172,6 +172,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                 borderRadius: BorderRadius.all(Radius.circular(100))),
           ),
         ),
+        Text(title),
       ],
     );
   }
