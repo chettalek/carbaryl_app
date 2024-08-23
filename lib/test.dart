@@ -77,27 +77,6 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
     }
   }
 
-  Future<void> _saveImageToGallery(XFile image) async {
-    try {
-      // บันทึกรูปภาพลงในแกลเลอรี
-      final bool? success = await GallerySaver.saveImage(image.path);
-      if (success != null && success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('บันทึกรูปภาพลงในแกลเลอรีแล้ว!')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('ไม่สามารถบันทึกรูปภาพได้')),
-        );
-      }
-    } catch (e) {
-      print('ข้อผิดพลาดในการบันทึกรูปภาพ: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('ข้อผิดพลาดในการบันทึกรูปภาพ: $e')),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

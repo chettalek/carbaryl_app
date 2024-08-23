@@ -213,13 +213,39 @@ class _AnalysisState extends State<Analysis> {
               ),
             ),
             itemcircle("Control", Control),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 30),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Text(
-                "R avg = ${NumberFormat("#,###.##").format(Ravg)}",
-                style: TextStyle(fontSize: 18),
+              padding: const EdgeInsets.only(top: 15),
+              child: Column(
+                children: [
+                  Text(
+                    "R avg = ${NumberFormat("#,###.##").format(Ravg)}",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      irrspan("I", "R"),
+                      Text(
+                        "- ",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      irrspan("I", "0"),
+                      Text(
+                        (Ravg == 0)
+                            ? " = 0"
+                            : ' = ${NumberFormat("#,###.##").format(Ravg - Control.red)}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
+
+            // ),
+
             Spacer(),
             Padding(
               padding: (Platform.isAndroid)
@@ -322,6 +348,34 @@ class _AnalysisState extends State<Analysis> {
               borderRadius: BorderRadius.all(Radius.circular(100))),
         ),
       ],
+    );
+  }
+
+  Widget irrspan(titletext, uspan) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: titletext,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+            ),
+          ),
+          WidgetSpan(
+            child: Transform.translate(
+              offset: Offset(0, 10), // ปรับระยะห่างของ R ที่ห้อย
+              child: Text(
+                uspan,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
