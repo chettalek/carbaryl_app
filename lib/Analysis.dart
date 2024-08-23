@@ -151,13 +151,13 @@ class _AnalysisState extends State<Analysis> {
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text('Analysis'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            iconSize: 40,
-            onPressed: () {},
-            icon: Icon(Icons.file_download_outlined),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     iconSize: 40,
+        //     onPressed: () {},
+        //     icon: Icon(Icons.file_download_outlined),
+        //   ),
+        // ],
       ),
       body: Center(
         child: Column(
@@ -243,9 +243,10 @@ class _AnalysisState extends State<Analysis> {
                             iconSize: 50,
                             onPressed: _pickImageFromGallery,
                             icon: Icon(
-                              Icons.auto_graph,
+                              //Icons.auto_graph,
+                              Icons.image_outlined,
                               size: 55,
-                              color: Color.fromARGB(255, 59, 194, 149),
+                              //color: Color.fromARGB(255, 59, 194, 149),
                             ),
                           ),
                         ],
