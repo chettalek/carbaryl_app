@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Setting.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class Analysis extends StatefulWidget {
   const Analysis({super.key});
@@ -17,7 +18,6 @@ class Analysis extends StatefulWidget {
 class _AnalysisState extends State<Analysis> {
   double mm = 0;
   double CC = 0;
-  double xx = 0;
   Color D1 = Colors.white;
   Color D2 = Colors.white;
   Color D3 = Colors.white;
@@ -34,8 +34,69 @@ class _AnalysisState extends State<Analysis> {
     setState(() {
       mm = prefs.getDouble("mm") ?? 0;
       CC = prefs.getDouble("CC") ?? 0;
-      xx = prefs.getDouble("xx") ?? 0;
     });
+  }
+
+  Future<void> _saveImageToGallery(XFile image) async {
+    try {
+      // บันทึกรูปภาพลงในแกลเลอรี
+      final bool? success = await GallerySaver.saveImage(image.path);
+      if (success != null && success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('บันทึกรูปภาพลงในแกลเลอรีแล้ว!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('ไม่สามารถบันทึกรูปภาพได้')),
+        );
+      }
+    } catch (e) {
+      print('ข้อผิดพลาดในการบันทึกรูปภาพ: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('ข้อผิดพลาดในการบันทึกรูปภาพ: $e')),
+      );
+    }
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    final pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery, maxHeight: 600, maxWidth: 400);
+
+    setState(() {
+      _imageFile = pickedFile;
+    });
+    if (_imageFile != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ColorPickerPage(
+                    pic: _imageFile,
+                  ))).then((val) {
+        print(val);
+        if (val != null) {
+          setState(() {
+            D1 = val["D1"];
+            D2 = val["D2"];
+            D3 = val["D3"];
+            Control = val["Control"];
+            Ravg = (D1.red + D2.red + D3.red) / 3;
+          });
+          print("-----------------------------------------------------");
+          print("----------------------------------------------------");
+          print("RD1 = ${D1.red}");
+          print("RD2 = ${D2.red}");
+          print("RD3 = ${D3.red}");
+          print("RControl = ${Control.red}");
+          print("Rtotal = RD1+RD2+RD3 = ${D1.red + D2.red + D3.red}");
+          print("Ravg = Rtotal / 3 = ${Ravg}");
+          print("y = Ravg - RControl = ${Ravg - Control.red}");
+          print(
+              "Display x = (y - c) / m = ${((Ravg - Control.red) - CC) / mm}");
+          print("----------------------------------------------------");
+          print("-----------------------------------------------------");
+        }
+      });
+    }
   }
 
   XFile? _imageFile;
@@ -44,10 +105,12 @@ class _AnalysisState extends State<Analysis> {
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(
         source: ImageSource.camera, maxHeight: 600, maxWidth: 400);
+
     setState(() {
       _imageFile = pickedFile;
     });
     if (_imageFile != null) {
+      _saveImageToGallery(_imageFile!);
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -178,7 +241,7 @@ class _AnalysisState extends State<Analysis> {
                           // ),
                           IconButton(
                             iconSize: 50,
-                            onPressed: () {},
+                            onPressed: _pickImageFromGallery,
                             icon: Icon(
                               Icons.auto_graph,
                               size: 55,

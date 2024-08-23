@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class ColorPickerPage extends StatefulWidget {
   @override
@@ -73,6 +74,27 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
           Control = color;
         }
       });
+    }
+  }
+
+  Future<void> _saveImageToGallery(XFile image) async {
+    try {
+      // บันทึกรูปภาพลงในแกลเลอรี
+      final bool? success = await GallerySaver.saveImage(image.path);
+      if (success != null && success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('บันทึกรูปภาพลงในแกลเลอรีแล้ว!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('ไม่สามารถบันทึกรูปภาพได้')),
+        );
+      }
+    } catch (e) {
+      print('ข้อผิดพลาดในการบันทึกรูปภาพ: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('ข้อผิดพลาดในการบันทึกรูปภาพ: $e')),
+      );
     }
   }
 
