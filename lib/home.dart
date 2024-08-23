@@ -40,7 +40,16 @@ class _homepageState extends State<homepage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset('assets/images/Food.png'),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Text(
+              //       "ชุดตรวจวัดปริมาณสารกำจัดแมลง",
+              //       style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              //     ),
+              //   ],
+              // ),
+              Image.asset('assets/images/wall.png'),
               GestureDetector(
                 onTap: () {
                   Navigator.push(context,
