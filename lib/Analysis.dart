@@ -231,7 +231,7 @@ class _AnalysisState extends State<Analysis> {
                         "- ",
                         style: TextStyle(fontSize: 18),
                       ),
-                      irrspan("I", "0"),
+                      irrspan("I", "R0"),
                       Text(
                         (Ravg == 0)
                             ? " = 0"
@@ -368,7 +368,7 @@ class _AnalysisState extends State<Analysis> {
               child: Text(
                 uspan,
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 12,
                   color: Colors.black,
                 ),
               ),
