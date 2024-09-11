@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:intl/intl.dart';
-// import 'package:carbaryl_app/getcolor.dart';
-import 'package:carbaryl_app/test.dart';
 import 'package:flutter/material.dart';
+import 'package:carbaryl_app/getcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Setting.dart';
 import 'package:image_picker/image_picker.dart';
