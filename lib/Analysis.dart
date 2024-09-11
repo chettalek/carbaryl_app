@@ -178,7 +178,7 @@ class _AnalysisState extends State<Analysis> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Communication', style: TextStyle(fontSize: 20)),
+                      Text('Concentration', style: TextStyle(fontSize: 20)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
